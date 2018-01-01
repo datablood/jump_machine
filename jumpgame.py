@@ -51,7 +51,7 @@ def jump(presstime,xbegin,ybegin):
         y2=ybegin,
         duration=presstime)
     subprocess.call(cmd,shell=True)
-    time.sleep(5)
+    time.sleep(6)
     get_screenshot()
 
 def get_im():
@@ -65,8 +65,8 @@ def get_screenshot():
     retcode += subprocess.call(
         'adb pull /sdcard/jump_temp.png ./data/', shell=True)
     if retcode != 0:
-        subprocess.call('adb shell kill-server', shell=True)
-        subprocess.call('adb shell devices', shell=True)
+        subprocess.call('adb kill-server', shell=True)
+        subprocess.call('adb devices', shell=True)
         get_screenshot()
 
 
