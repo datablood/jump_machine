@@ -1,2 +1,2 @@
-model_checkpoint_path: "-dqn-100"
-all_model_checkpoint_paths: "-dqn-100"
+model_checkpoint_path: "dqn-300"
+all_model_checkpoint_paths: "dqn-300"

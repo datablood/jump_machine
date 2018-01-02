@@ -86,6 +86,6 @@ def get_beginbutton():
 def checkCrash(arrim):
     # arrim = np.array(im)
     print arrim.mean()
-    if arrim.mean() < 120:
+    if arrim.mean() < 138:
         return True
     return False
