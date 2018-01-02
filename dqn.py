@@ -10,9 +10,9 @@ from collections import deque
 ACTIONS = 8 # number of valid actions
 GAMMA = 0.99 # decay rate of past observations
 OBSERVE = 1000. # timesteps to observe before training
-EXPLORE = 2000000. # frames over which to anneal epsilon
-FINAL_EPSILON = 0.0001 # final value of epsilon
-INITIAL_EPSILON = 0.4 # starting value of epsilon
+EXPLORE = 10000. # frames over which to anneal epsilon
+FINAL_EPSILON = 0.01 # final value of epsilon
+INITIAL_EPSILON = 0.3 # starting value of epsilon
 REPLAY_MEMORY = 50000 # number of previous transitions to remember
 BATCH = 32 # size of minibatch
 FRAME_PER_ACTION = 1
@@ -92,7 +92,7 @@ def trainNetwork(s, readout, h_fc1, sess):
     # get the first state by doing nothing and preprocess the image to 80x80x4
     do_begin = np.zeros(ACTIONS)
     do_begin[0] = 1
-    x_t, r_0, terminal = game_state.frame_step(do_begin)
+    x_t, r_0, terminal = game_state.frame_step(do_begin,isfirst=True)
     x_t = cv2.cvtColor(cv2.resize(x_t, (80, 80)), cv2.COLOR_BGR2GRAY)
     ret, x_t = cv2.threshold(x_t,1,255,cv2.THRESH_BINARY)
     s_t = np.stack((x_t, x_t, x_t, x_t), axis=2)

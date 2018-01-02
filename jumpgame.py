@@ -12,7 +12,7 @@ class GameState:
     def __init__(self):
         self.xbegin, self.ybegin = get_beginbutton()
 
-    def frame_step(self, input_actions):
+    def frame_step(self, input_actions,isfirst=False):
         reward = 0.1
         terminal = False
 
@@ -22,25 +22,37 @@ class GameState:
         action_index = np.argmax(input_actions)
         presstime = PRESSTIME[action_index]
 
+        image_data = get_im()
+        if isfirst:
+            print 'first state,donotiong'
+            isfirstCrash= checkCrash(image_data)
+            if isfirstCrash:
+                jump(20,self.xbegin,self.ybegin)
+                image_data = get_im()
 
-        im_begin= get_im()
-        isCrash_begin = checkCrash(im_begin)
-        if isCrash_begin:
-            jump(20,self.xbegin,self.ybegin)
-            print 'play again'
-            im_begin=get_im()
-            return self.frame_step(input_actions)
         else:
-            jump(presstime,5,5)
-        im_end= get_im()
-        isCrash_end = checkCrash(im_end)
-        if isCrash_end :
-            terminal = True
-            reward = -1
-        else :
-            reward = 1
+            im_begin= get_im()
+            isCrash_begin = checkCrash(im_begin)
+            if isCrash_begin:
+                jump(20,self.xbegin,self.ybegin)
+                print 'play again'
+                im_begin=get_im()
+                return self.frame_step(input_actions)
+            else:
+                jump(presstime,5,5)
+            im_end= get_im()
+            isCrash_end = checkCrash(im_end)
 
-        image_data = im_begin
+            if isCrash_end :
+                terminal = True
+                reward = -1
+                print ' recover begin'
+                jump(20,self.xbegin,self.ybegin)
+            else :
+                reward = 1
+            im_end=get_im()
+
+            image_data = im_end
         return image_data, reward, terminal
 
 def jump(presstime,xbegin,ybegin):
